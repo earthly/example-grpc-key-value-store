@@ -1,0 +1,16 @@
+FROM ruby:latest
+
+RUN gem install grpc
+
+WORKDIR /kvclient
+
+code:
+    COPY client.rb .
+    COPY ../proto+proto-rb/rb-pb/*.rb .
+
+kvclient-docker:
+    FROM +code
+    SAVE IMAGE as ruby-kvclient:latest
+
+all:
+    BUILD +kvclient-docker

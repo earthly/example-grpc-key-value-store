@@ -1,0 +1,20 @@
+FROM golang:1.13-alpine3.11
+
+WORKDIR /kvserver
+
+kvserver:
+    COPY go.mod go.sum ./
+    RUN go mod download
+    COPY ../proto+proto-go/go-pb kvapi
+    COPY --dir cmd ./
+    RUN go build -o kvserver cmd/server/main.go
+    SAVE ARTIFACT kvserver
+
+kvserver-docker:
+    FROM alpine:latest
+    COPY +kvserver/kvserver /kvserver
+    ENTRYPOINT /kvserver
+    SAVE IMAGE kvserver:latest
+
+all:
+    BUILD +kvserver-docker

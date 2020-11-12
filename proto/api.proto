@@ -1,0 +1,30 @@
+syntax = "proto3";
+package simplekeyvalue;
+option go_package = "kvapi";
+
+// The greeting service definition.
+service KeyValue {
+  // Sends a greeting
+  rpc Set (SetRequest) returns (SetReply) {}
+  rpc Get (GetRequest) returns (GetReply) {}
+}
+
+// SetRequest contains a key and value to set
+message SetRequest {
+  string key = 1;
+  string value = 2;
+}
+
+// SetReply contains nothing
+message SetReply {
+}
+
+// GetRequest contains a key and value to set
+message GetRequest {
+  string key = 1;
+}
+
+// GetReply contains the value
+message GetReply {
+  string value = 1;
+}
