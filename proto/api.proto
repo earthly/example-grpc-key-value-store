@@ -1,6 +1,6 @@
 syntax = "proto3";
 package simplekeyvalue;
-option go_package = "kvapi";
+option go_package = "/kvapi";
 
 // The greeting service definition.
 service KeyValue {
