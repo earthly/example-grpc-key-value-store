@@ -5,10 +5,18 @@ WORKDIR /kvserver
 kvserver:
     COPY go.mod go.sum ./
     RUN go mod download
+    RUN rm -fr kvapi
     COPY ../proto+proto-go/go-pb ./
     COPY --dir cmd ./
     RUN go build -o kvserver cmd/server/main.go
     SAVE ARTIFACT kvserver
+
+kvserver-dev:
+    # Call this if you'd like to develop using local Golang tooling outside of
+    # Earthly.
+    FROM scratch
+    COPY ../proto+proto-go/go-pb ./
+    SAVE ARTIFACT kvapi AS LOCAL kvapi
 
 kvserver-docker:
     FROM alpine:latest
