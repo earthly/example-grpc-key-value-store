@@ -19,7 +19,7 @@ message SetRequest {
 message SetReply {
 }
 
-// GetRequest contains a key and value to set
+// GetRequest contains a key to retrieve
 message GetRequest {
   string key = 1;
 }
