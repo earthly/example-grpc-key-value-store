@@ -5,7 +5,7 @@ WORKDIR /kvserver
 kvserver:
     COPY go.mod go.sum ./
     RUN go mod download
-    COPY ../proto+proto-go/go-pb ./
+    COPY ../proto+proto-go/kvapi kvapi
     COPY --dir cmd ./
     RUN go build -o kvserver cmd/server/main.go
     SAVE ARTIFACT kvserver

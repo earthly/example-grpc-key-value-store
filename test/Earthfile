@@ -1,0 +1,20 @@
+all:
+    BUILD +test
+
+test:
+    FROM alpine:3.13
+    WITH DOCKER \
+       --load kvserver=../go-server+kvserver \
+       --load pyclient=../python-client+kvclient-docker \
+       --load rbclient=../ruby-client+kvclient-docker
+       RUN \
+           # start the server in the background
+           docker run --name=goserver -d --network=host kvserver:latest /kvserver/kvserver && \
+           # wait up to 5 seconds for server to start
+           timeout 5 /bin/sh -c 'until nc -z $0 $1; do sleep 1; done' localhost 50051 || ( echo "server failed to respond to tcp request"; exit 1) && \
+           # set a value via the python client
+           docker run --name=pyclient --network=host pyclient:latest python3 /kvclient/client.py weather=sunny && \
+           # fetch a value via the ruby client
+           docker run --name=rbclient --network=host rbclient:latest ruby /kvclient/client.rb weather > weather.value && \
+           test "$(cat weather.value)" = "sunny"
+    END
