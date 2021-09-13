@@ -16,7 +16,7 @@ proto-go:
   COPY api.proto /defs
   RUN mkdir /defs/go-api
   RUN protoc --proto_path=/defs --go_out=/defs/go-api --go-grpc_out=/defs/go-api /defs/api.proto
-  SAVE ARTIFACT ./go-api /go-pb AS LOCAL go-pb
+  SAVE ARTIFACT ./go-api/kvapi AS LOCAL kvapi
 
 proto-py:
   RUN apt-get install -y python3 python3-pip
